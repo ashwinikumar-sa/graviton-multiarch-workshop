@@ -4,7 +4,7 @@ Graviton multi-arch workshop
 
 In this module of the workshop, you will deploy a mixed architecture Auto Scaling group with x86 and Graviton instances
 ```bash
-git clone abc
+git clone https://github.com/ashwinikumar-sa/graviton-multiarch-workshop.git
 cd abc
 ```
 
