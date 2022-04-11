@@ -8,6 +8,19 @@ git clone https://github.com/ashwinikumar-sa/graviton-multiarch-workshop.git
 cd abc
 ```
 
+```bash
+export AWS_REGION=$(curl --silent http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r .region)
+export stack_name=$(aws cloudformation describe-stacks --query 'Stacks[3].StackName' --output text)
+
+# load outputs to env vars
+for output in $(aws cloudformation describe-stacks --stack-name $stack_name --query 'Stacks[].Outputs[].OutputKey' --output text)
+do
+    export $output=$(aws cloudformation describe-stacks --stack-name $stack_name --query 'Stacks[].Outputs[?OutputKey==`'$output'`].OutputValue' --output text)
+    eval "echo $output : \"\$$output\""
+done
+```
+
+
 Create Auto Scaling group
 ```bash
 aws autoscaling create-auto-scaling-group --cli-input-json file://asg.json
