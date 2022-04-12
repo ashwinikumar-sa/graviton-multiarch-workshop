@@ -19,7 +19,7 @@ do
     eval "echo $output : \"\$$output\""
 done
 ```
-
+  
 
 Create Auto Scaling group
 ```bash
