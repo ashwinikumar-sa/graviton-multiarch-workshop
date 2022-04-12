@@ -1,0 +1,55 @@
+{
+    "AutoScalingGroupName": "asg-mixed-arch",
+    "DesiredCapacityType": "units",
+    "MixedInstancesPolicy": {
+        "LaunchTemplate": {
+            "LaunchTemplateSpecification": {
+                "LaunchTemplateName": "lt-x86",
+                "Version": "$Default"
+            },
+            "Overrides": [{
+                "InstanceRequirements": {
+                    "VCpuCount": {"Min": 4, "Max": 16},
+                    "MemoryMiB": {"Min": 16384, "Max": 131072},
+					"MemoryGiBPerVCpu": {"Min": 4.0, "Max": 8.0},
+					"SpotMaxPricePercentageOverLowestPrice": 100,
+                    "CpuManufacturers": ["intel","amd"],
+                    "InstanceGenerations": ["current"],
+					"AcceleratorCount": {"Min": 0, "Max": 0},
+                    "ExcludedInstanceTypes": ["d*", "h*", "x*","z*"]
+                }
+            },
+            {
+                "InstanceRequirements": {
+                    "VCpuCount": {"Min": 4, "Max": 16},
+                    "MemoryMiB": {"Min": 16384, "Max": 131072},
+					"MemoryGiBPerVCpu": {"Min": 4.0, "Max": 8.0},
+					"SpotMaxPricePercentageOverLowestPrice": 100,
+                    "CpuManufacturers": ["amazon-web-services"],
+                    "InstanceGenerations": ["current"],
+					"AcceleratorCount": {"Min": 0, "Max": 0},
+                    "ExcludedInstanceTypes": ["d*", "h*", "x*","z*"]
+                },
+                "LaunchTemplateSpecification": {
+                        "LaunchTemplateName": "lt-arm64",
+                        "Version": "$Default"
+                }                
+    
+            }]
+        },
+        "InstancesDistribution": {
+			"OnDemandBaseCapacity": 0,
+            "OnDemandPercentageAboveBaseCapacity": 50,
+            "SpotAllocationStrategy": "capacity-optimized",
+			"OnDemandAllocationStrategy": "lowest-price"
+        }
+    },
+    "MinSize": 0,
+    "MaxSize": 24,
+    "DesiredCapacity": 6,
+    "TargetGroupARNs": [
+        "%TargetGroupARN%"
+        ],
+  "HealthCheckType": "EC2",
+  "VPCZoneIdentifier": "%publicSubnet1%,%publicSubnet2%,%publicSubnet3%"
+}
