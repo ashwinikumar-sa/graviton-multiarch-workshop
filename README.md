@@ -29,5 +29,9 @@ export tg_arn=$(aws elbv2 describe-target-groups --names $stack_name --query Tar
 
 ### Create Auto Scaling group
 ```bash
+sed -i.bak -e "s#%TargetGroupARN%#$tg_arn#g" -e "s/%publicSubnet1%/$publicSubnet1/g" -e "s/%publicSubnet2%/$publicSubnet2/g" -e "s/%publicSubnet3%/$publicSubnet3/g" asg-config-multiarch.json
+```
+
+```bash
 aws autoscaling create-auto-scaling-group --cli-input-json file://asg-config-multiarch.json
 ```
