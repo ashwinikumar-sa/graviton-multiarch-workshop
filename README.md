@@ -3,6 +3,21 @@ Graviton multi-arch workshop
 ## Module-1: Deploy and run a multi-arch application on a mixed-arch Auto Scaling group (with x86 and Graviton instances) 
 In this module of the workshop, you will deploy a mixed architecture Auto Scaling group with x86 and Graviton instances. You will be deploying a sample node.js application with node.js dependencies with user data script by modifying launch templates.
 
+### Know your workshop environment (Prerequisites)
+The workshop account is pre-deployed with following:
+
+•	Region: us-west-2
+
+•	Cloud9 environment
+
+•	A VPC with 6 subnets; 3 public and 3 private subnets
+
+•	Application Load Balancer (ALB) with its own security group
+
+•	Target Group and an ALB listener
+
+•	2 Launch Templates with Graviton and x86 compatible Amazon Machine Images (AMIs)
+
 ### Step 1: Go to Cloud9 IDE
 
 ![image](https://user-images.githubusercontent.com/75417152/163193042-41ca1705-a8d8-48ac-995e-4ae8fe43339b.png)
