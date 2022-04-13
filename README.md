@@ -88,7 +88,8 @@ node app.js
 
 ### Now, let's refresh the instances in the Auto Scaling group so that the latest version of the launch template is used.
 ```bash
-aws autoscaling start-instance-refresh --auto-scaling-group-name asg-mixed-arch
+aws autoscaling start-instance-refresh --auto-scaling-group-name asg-mixed-arch --preferences '{"InstanceWarm
+up": 2, "MinHealthyPercentage": 0}'
 ```
 
 
