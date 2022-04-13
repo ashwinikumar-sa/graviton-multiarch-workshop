@@ -48,8 +48,8 @@
     "MaxSize": 24,
     "DesiredCapacity": 6,
     "TargetGroupARNs": [
-        "arn:aws:elasticloadbalancing:us-west-2:765406812250:targetgroup/mod-de59cad32b814ebf/9a3289e77f1a0fb0"
+        "%TargetGroupARN%"
         ],
   "HealthCheckType": "EC2",
-  "VPCZoneIdentifier": "subnet-07c7f68bf002da6bc,subnet-035a26591a3d03eca,subnet-03d24d22cca444633"
+  "VPCZoneIdentifier": "%publicSubnet1%,%publicSubnet2%,%publicSubnet3%"
 }
