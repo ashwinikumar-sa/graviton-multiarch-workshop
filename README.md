@@ -79,7 +79,7 @@ server.listen(port, () => {
 ```
 
 ### Step 4: Let's modify Launch Templates with user data to install our app
-### Modify x86 Launch Template
+### Step 4.1: Modify x86 Launch Template (create new version)
 
 ![image](https://user-images.githubusercontent.com/75417152/163204637-e7d24ab0-44a1-450b-95e3-ed81a7f4e88c.png)
 
@@ -99,8 +99,13 @@ git clone https://github.com/ashwinikumar-sa/graviton-multiarch-workshop
 cd graviton-multiarch-workshop
 node app.js
 ```
+### Step 4.2: Set latest version as Default version
+![image](https://user-images.githubusercontent.com/75417152/163228623-26dddbbd-9a65-47e1-8650-bd613ee9fe64.png)
+![image](https://user-images.githubusercontent.com/75417152/163228839-0f667d2e-8cba-427d-ac79-3e6a3bd31316.png)
+![image](https://user-images.githubusercontent.com/75417152/163228906-37022261-8c41-4eab-95e7-8c1fedc34493.png)
 
-### Modify Graviton Launch Template
+
+### Step 4.3: Modify Graviton Launch Template (create new version)
 
 ![image](https://user-images.githubusercontent.com/75417152/163206210-be0dbd6c-50aa-496c-941f-b0f6e385f72a.png)
 
@@ -120,6 +125,7 @@ git clone https://github.com/ashwinikumar-sa/graviton-multiarch-workshop
 cd graviton-multiarch-workshop
 node app.js
 ```
+### Step 4.4: Set latest version to default version for this Launch Template as well (same as Step 4.2)
 
 ### Step 5: Refresh the instances in ASG to use modified version of the launch template and install node.js app
 ```bash
