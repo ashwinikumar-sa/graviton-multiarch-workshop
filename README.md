@@ -1,10 +1,10 @@
 # graviton-multiarch-workshop
 Graviton multi-arch workshop
 ## Module-1
+In this module of the workshop, you will deploy a mixed architecture Auto Scaling group with x86 and Graviton instances. You will be deploying a sample node.js application with node.js dependencies with user data script by modifying launch templates.
 
 ### Step-1: On Cloud9
 
-In this module of the workshop, you will deploy a mixed architecture Auto Scaling group with x86 and Graviton instances
 ```bash
 git clone https://github.com/ashwinikumar-sa/graviton-multiarch-workshop.git
 cd graviton-multiarch-workshop 
