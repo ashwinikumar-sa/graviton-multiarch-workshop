@@ -43,3 +43,49 @@ Please feel free to explore Launch Templates in Console:
 ![image](https://user-images.githubusercontent.com/75417152/163200439-04615c20-e5d2-4cba-8795-361e54fd895e.png)
 
 
+### Let's modify Launch Templates with user data to install our app
+### Modify x86 Launch Template
+
+![image](https://user-images.githubusercontent.com/75417152/163204637-e7d24ab0-44a1-450b-95e3-ed81a7f4e88c.png)
+
+### User data
+```bash
+#!/bin/bash
+
+yum update -y
+yum install git -y
+VERSION=v14.15.3
+DISTRO=linux-x64
+wget https://nodejs.org/dist/$VERSION/node-$VERSION-$DISTRO.tar.xz
+mkdir -p /usr/local/lib/nodejs
+sudo tar -xJvf node-$VERSION-$DISTRO.tar.xz -C /usr/local/lib/nodejs 
+export PATH=/usr/local/lib/nodejs/node-$VERSION-$DISTRO/bin:$PATH
+git clone https://github.com/ashwinikumar-sa/graviton-multiarch-workshop
+cd graviton-multiarch-workshop
+node app.js
+```
+
+### Modify Graviton Launch Template
+
+![image](https://user-images.githubusercontent.com/75417152/163206210-be0dbd6c-50aa-496c-941f-b0f6e385f72a.png)
+
+### User data
+```bash
+#!/bin/bash
+
+yum update -y
+yum install git -y
+VERSION=v14.15.3
+DISTRO=linux-arm64
+wget https://nodejs.org/dist/$VERSION/node-$VERSION-$DISTRO.tar.xz
+mkdir -p /usr/local/lib/nodejs
+sudo tar -xJvf node-$VERSION-$DISTRO.tar.xz -C /usr/local/lib/nodejs 
+export PATH=/usr/local/lib/nodejs/node-$VERSION-$DISTRO/bin:$PATH
+git clone https://github.com/ashwinikumar-sa/graviton-multiarch-workshop
+cd graviton-multiarch-workshop
+node app.js
+```
+
+
+
+
