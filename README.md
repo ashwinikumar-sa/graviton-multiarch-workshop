@@ -2,6 +2,8 @@
 Graviton multi-arch workshop
 ## Module-1
 
+### Step-1: On Cloud9
+
 In this module of the workshop, you will deploy a mixed architecture Auto Scaling group with x86 and Graviton instances
 ```bash
 git clone https://github.com/ashwinikumar-sa/graviton-multiarch-workshop.git
