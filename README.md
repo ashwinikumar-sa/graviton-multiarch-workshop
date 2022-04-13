@@ -23,10 +23,11 @@ do
     export $output=$(aws cloudformation describe-stacks --stack-name $stack_name --query 'Stacks[].Outputs[?OutputKey==`'$output'`].OutputValue' --output text)
     eval "echo $output : \"\$$output\""
 done
+export tg_arn=$(aws elbv2 describe-target-groups --names $stack_name --query TargetGroups[].TargetGroupArn --output text)
 ```
-  
 
-Create Auto Scaling group
+
+### Create Auto Scaling group
 ```bash
 aws autoscaling create-auto-scaling-group --cli-input-json file://asg-config-multiarch.json
 ```
