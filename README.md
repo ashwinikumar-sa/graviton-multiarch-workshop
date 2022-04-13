@@ -23,5 +23,5 @@ done
 
 Create Auto Scaling group
 ```bash
-aws autoscaling create-auto-scaling-group --cli-input-json file://asg.json
+aws autoscaling create-auto-scaling-group --cli-input-json file://asg-config-multiarch.json
 ```
