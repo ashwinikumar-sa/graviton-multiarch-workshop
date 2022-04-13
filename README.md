@@ -102,7 +102,7 @@ node app.js
 ### Step 4.2: Set latest version as Default version
 ![image](https://user-images.githubusercontent.com/75417152/163228623-26dddbbd-9a65-47e1-8650-bd613ee9fe64.png)
 ![image](https://user-images.githubusercontent.com/75417152/163228839-0f667d2e-8cba-427d-ac79-3e6a3bd31316.png)
-![image](https://user-images.githubusercontent.com/75417152/163228906-37022261-8c41-4eab-95e7-8c1fedc34493.png)
+![image](https://user-images.githubusercontent.com/75417152/163230448-21c9e714-deaa-49a3-aaa8-478579b72b4e.png)
 
 
 ### Step 4.3: Modify Graviton Launch Template (create new version)
@@ -126,6 +126,9 @@ cd graviton-multiarch-workshop
 node app.js
 ```
 ### Step 4.4: Set latest version to default version for this Launch Template as well (same as Step 4.2)
+![image](https://user-images.githubusercontent.com/75417152/163230229-97165501-ac7d-4cd6-88ad-cf9a9bd32acb.png)
+
+
 
 ### Step 5: Refresh the instances in ASG to use modified version of the launch template and install node.js app
 ```bash
