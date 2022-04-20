@@ -155,5 +155,5 @@ aws autoscaling start-instance-refresh \
 
 =======================================================================================
 
-## Module-2: Build, deploy and run multi-arch containers on multi-arch Amazon EKS cluster
+## Module-2: Build, deploy and run multi-arch containers on a multi-arch Amazon EKS cluster (with x86 and Graviton instances)
 In this module of the workshop, you will be creating EKS managed node groups with Graviton and x86 instances in an Amazon EKS cluster. Then, you will build a multi-arch container image of a sample node.js application for x86_64 and arm64 target architectures and store it on Amazon ECR with a single manifest list. Finally,  you will be deploying pods with multi-arch container image on x86 and Graviton based nodes on EKS cluster
