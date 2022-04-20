@@ -157,3 +157,96 @@ aws autoscaling start-instance-refresh \
 
 ## Module-2: Build, deploy and run multi-arch containers on a multi-arch Amazon EKS cluster (with x86 and Graviton instances)
 In this module of the workshop, you will be creating EKS managed node groups with Graviton and x86 instances in an Amazon EKS cluster. Then, you will build a multi-arch container image of a sample node.js application for x86_64 and arm64 target architectures and store it on Amazon ECR with a single manifest list. Finally,  you will be deploying pods with multi-arch container image on x86 and Graviton based nodes on EKS cluster
+
+### Step 1: Check the EKS cluster
+```bash
+eksctl get cluster
+kubectl get nodes
+```
+
+### Step 2: Create two Managed Node groups with Graviton and x86 based instances in Amazon EKS cluster
+To create a Graviton based nodegroup, kube-proxy, coredns and aws-node addons should be up to date. Please use below eksctl commands to update them.
+
+```bash
+eksctl utils update-coredns --cluster eksworkshop-eksctl --approve 
+
+eksctl utils update-kube-proxy --cluster eksworkshop-eksctl --approve 
+
+eksctl utils update-aws-node --cluster eksworkshop-eksctl --approve
+```
+
+Now, explore node group configuration files:
+### add-mng-gv2.yaml
+
+```bash
+---
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+managedNodeGroups:
+- name: arm64-mng-od-4vcpu-16gb
+  desiredCapacity: 1
+  minSize: 0
+  maxSize: 2
+  instanceType: m6g.xlarge
+  iam:
+    withAddonPolicies:
+      autoScaler: true
+      cloudWatch: true
+      albIngress: true
+  privateNetworking: true
+  labels:
+    alpha.eksctl.io/cluster-name: eksworkshop-eksctl
+    alpha.eksctl.io/nodegroup-name: arm64-mng-od-4vcpu-16gb
+    intent: mng-multiarch-apps
+  tags:
+    alpha.eksctl.io/nodegroup-name: arm64-mng-od-4vcpu-16gb
+    alpha.eksctl.io/nodegroup-type: managed
+    k8s.io/cluster-autoscaler/node-template/label/intent: mng-multiarch-apps
+
+metadata:
+  name: eksworkshop-eksctl
+  region: us-west-2
+  version: "1.21"
+```
+### add-mng-x86.yaml
+
+```bash
+---
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+managedNodeGroups:
+- name: x86-mng-od-4vcpu-16gb
+  desiredCapacity: 1
+  minSize: 0
+  maxSize: 2
+  instanceType: m5.xlarge
+  iam:
+    withAddonPolicies:
+      autoScaler: true
+      cloudWatch: true
+      albIngress: true
+  privateNetworking: true
+  labels:
+    alpha.eksctl.io/cluster-name: eksworkshop-eksctl
+    alpha.eksctl.io/nodegroup-name: x86-mng-od-4vcpu-16gb
+    intent: mng-multiarch-apps
+  tags:
+    alpha.eksctl.io/nodegroup-name: x86-mng-od-4vcpu-16gb
+    alpha.eksctl.io/nodegroup-type: managed
+    k8s.io/cluster-autoscaler/node-template/label/intent: mng-multiarch-apps
+
+metadata:
+  name: eksworkshop-eksctl
+  region: us-west-2
+  version: "1.21"
+```
+### Create Graviton instances based EKS managed node group
+```bash
+eksctl create nodegroup --config-file=add-mng-gv2.yaml
+```
+### Create x86 instances based EKS managed node group
+```bash
+eksctl create nodegroup --config-file=add-mng-x86.yaml
+```
