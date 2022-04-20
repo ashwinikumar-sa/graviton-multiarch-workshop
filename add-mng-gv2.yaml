@@ -1,0 +1,29 @@
+---
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+managedNodeGroups:
+- name: arm64-mng-od-4vcpu-16gb
+  desiredCapacity: 1
+  minSize: 0
+  maxSize: 2
+  instanceType: m6g.xlarge
+  iam:
+    withAddonPolicies:
+      autoScaler: true
+      cloudWatch: true
+      albIngress: true
+  privateNetworking: true
+  labels:
+    alpha.eksctl.io/cluster-name: eksworkshop-eksctl
+    alpha.eksctl.io/nodegroup-name: arm64-mng-od-4vcpu-16gb
+    intent: mng-multiarch-apps
+  tags:
+    alpha.eksctl.io/nodegroup-name: arm64-mng-od-4vcpu-16gb
+    alpha.eksctl.io/nodegroup-type: managed
+    k8s.io/cluster-autoscaler/node-template/label/intent: mng-multiarch-apps
+
+metadata:
+  name: eksworkshop-eksctl
+  region: us-west-2
+  version: "1.21"
