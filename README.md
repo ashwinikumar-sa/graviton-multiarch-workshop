@@ -347,8 +347,12 @@ aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS 
 Explore your application files to build container images:
 * app.js
 * Dockerfile
-* package-lock.json
 * package.json
+
+Now run following command to create a package-lock.json file:
+```bash
+npm install
+```
 
 Now, create your multi-arch images with the docker buildx. This single command instructs Buildx to create images for x86 and Arm64 architecture, generate a multi-arch manifest and push all images to your myrepo Amazon ECR registry.
 
