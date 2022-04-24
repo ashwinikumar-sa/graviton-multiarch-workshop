@@ -48,6 +48,10 @@ The output assumed-role ARN should contain TeamRole and Instance ID like below:
 "Arn": "arn:aws:sts::{ACCOUNT_ID}:assumed-role/TeamRole/{Instance_ID}"
 ```
 
+### Resize Cloud9 Instance Root Volume to 100 GiB
+The default 10GB may not be enough to build your application docker images. Thus, let us resize the EBS volume used by the Cloud9 instance using below link:
+
+https://ec2spotworkshops.com/ecs-spot-capacity-providers/workshopsetup/resize_ebs.html
 
 ### Let's now clone workshop repo to Cloud9
 
@@ -300,7 +304,7 @@ kubectl get svc kube-ops-view | tail -n 1 | awk '{ print "Kube-ops-view URL = ht
 ```
 This will display a line similar to Kube-ops-view URL = http://<URL_PREFIX_ELB>.amazonaws.com Opening the URL in your browser will provide the current state of our cluster. You can see two new nodes created with m5.xlarge (x86_64) and m6g.xlarge (ARM64) instance types.
 
-### Install Docker Buildx
+### Install Docker Buildx and configure for building images for multiple target architectures
 We will now use the Docker Buildx CLI plug-in that extends the Docker command to transparently build multi-arch images, link them together with a manifest file, and push them all to Amazon ECR repository using a single command. Let's install Buildx first.
 ```bash
 wget https://github.com/docker/buildx/releases/download/v0.8.2/buildx-v0.8.2.linux-amd64
@@ -309,4 +313,45 @@ mv buildx-v0.8.2.linux-amd64 buildx
 mv buildx ~/.docker/cli-plugins/docker-buildx
 chmod a+x ~/.docker/cli-plugins/docker-buildx
 ```
+Enter the following command to configure Buildx binary for different architectures. The following command installs emulators so that you can run and build containers for x86 and Arm64.
+```bash
+docker run --privileged --rm tonistiigi/binfmt --install all
+```
 
+Check to see a list of build environments. If this is first time, you should only see the default builder.
+```bash
+docker buildx ls
+```
+We recommend using new builder. Enter the following command to create a new builder named mybuild and switch to it to use it as default. The bootstrap flag ensures that the driver is running.
+```bash
+docker buildx create --name mybuild --use
+docker buildx inspect --bootstrap
+docker buildx ls
+```
+
+### Create multi-arch images for x86 and Arm64 platforms and push them to your Amazon ECR repository
+Interpreted and bytecode-compiled languages such as Java and Node.js tend to work without any code modifications, unless they are pulling in any native binary extensions. In order to run a Node.js docker image on both x86 and Arm64, you must build images for those two architectures. Using Docker Buildx, you can build images for both x86 and Arm64 then push those container images to Amazon ECR at the same time.
+
+Check your ECR repository named "myrepo" available in pre-deployed workshop environment:
+
+```bash
+aws ecr describe-repositories
+```
+
+Now, authenticate your Docker client to your Amazon ECR registry so that you can use the docker push commands to push images to the repositories. Enter the following command to retrieve an authentication token and authenticate your Docker client to your Amazon ECR registry. 
+
+```bash
+aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+```
+
+Explore your application files to build container images:
+* app.js
+* Dockerfile
+* package-lock.json
+* package.json
+
+Now, create your multi-arch images with the docker buildx. This single command instructs Buildx to create images for x86 and Arm64 architecture, generate a multi-arch manifest and push all images to your myrepo Amazon ECR registry.
+
+```bash
+docker buildx build --platform linux/amd64,linux/arm64 --tag ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/myrepo:latest --push .
+```
