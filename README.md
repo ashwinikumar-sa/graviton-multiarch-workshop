@@ -300,4 +300,13 @@ kubectl get svc kube-ops-view | tail -n 1 | awk '{ print "Kube-ops-view URL = ht
 ```
 This will display a line similar to Kube-ops-view URL = http://<URL_PREFIX_ELB>.amazonaws.com Opening the URL in your browser will provide the current state of our cluster. You can see two new nodes created with m5.xlarge (x86_64) and m6g.xlarge (ARM64) instance types.
 
+### Install Docker Buildx
+We will now use the Docker Buildx CLI plug-in that extends the Docker command to transparently build multi-arch images, link them together with a manifest file, and push them all to Amazon ECR repository using a single command. Let's install Buildx first.
+```bash
+wget https://github.com/docker/buildx/releases/download/v0.8.2/buildx-v0.8.2.linux-amd64
+mkdir -p ~/.docker/cli-plugins
+mv buildx-v0.8.2.linux-amd64 buildx
+mv buildx ~/.docker/cli-plugins/docker-buildx
+chmod a+x ~/.docker/cli-plugins/docker-buildx
+```
 
