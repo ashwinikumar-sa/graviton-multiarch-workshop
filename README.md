@@ -1,6 +1,13 @@
 # Multi-architecture workshop with Graviton and x86 architectures
 Graviton multi-arch workshop consists of two modules below. We recommend completing the workshop with both modules in same sequence as some steps like cloning the workshop directory are executed in Module 1 and not repeated in Module 2 instructions to avoid duplication of steps.
 
+# Contents
+* [Know your pre-deployed workshop environment](https://github.com/ashwinikumar-sa/graviton-multiarch-workshop/edit/main/README.md#know-your-pre-deployed-workshop-environment-prerequisites)
+* [Go to Cloud9 IDE](https://github.com/ashwinikumar-sa/graviton-multiarch-workshop/edit/main/README.md#go-to-cloud9-ide)
+* [Update IAM settings of your workspace](https://github.com/ashwinikumar-sa/graviton-multiarch-workshop/edit/main/README.md#update-iam-settings-for-your-workspace)
+* [Validate IAM Role](https://github.com/ashwinikumar-sa/graviton-multiarch-workshop/edit/main/README.md#validate-iam-role)
+
+
 ### Know your pre-deployed workshop environment (Prerequisites)
 The workshop account is pre-deployed with following:
 
