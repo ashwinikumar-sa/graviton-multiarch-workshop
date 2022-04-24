@@ -1,4 +1,4 @@
-# graviton-multiarch-workshop
+# Multi-architecture workshop with Graviton and x86 architectures
 Graviton multi-arch workshop consists of two modules below. We recommend completing the workshop with both modules in same sequence as some steps like cloning the workshop directory are executed in Module 1 and not repeated in Module 2 instructions to avoid duplication of steps.
 
 ### Know your pre-deployed workshop environment (Prerequisites)
