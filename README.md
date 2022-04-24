@@ -4,10 +4,10 @@ Graviton multi-arch workshop consists of two modules:
 * [Module 2-Mixed-architecture Amazon EKS cluster for running multi-arch container](#module-2-build-deploy-and-run-multi-arch-containers-on-a-multi-arch-amazon-eks-cluster-with-x86-and-graviton-instances)
 
 # Contents
-* [Know your pre-deployed workshop environment](https://github.com/ashwinikumar-sa/graviton-multiarch-workshop/edit/main/README.md#know-your-pre-deployed-workshop-environment-prerequisites)
-* [Go to Cloud9 IDE](https://github.com/ashwinikumar-sa/graviton-multiarch-workshop/edit/main/README.md#go-to-cloud9-ide)
-* [Update IAM settings of your workspace](https://github.com/ashwinikumar-sa/graviton-multiarch-workshop/edit/main/README.md#update-iam-settings-for-your-workspace)
-* [Validate IAM Role](https://github.com/ashwinikumar-sa/graviton-multiarch-workshop/edit/main/README.md#validate-iam-role)
+* [Know your pre-deployed workshop environment](#know-your-pre-deployed-workshop-environment-prerequisites)
+* [Go to Cloud9 IDE](#go-to-cloud9-ide)
+* [Update IAM settings of your workspace](#update-iam-settings-for-your-workspace)
+* [Validate IAM Role](#validate-iam-role)
 
 
 ### Know your pre-deployed workshop environment (Prerequisites)
