@@ -1,7 +1,9 @@
 # Multi-architecture workshop with Graviton and x86 architectures
-Graviton multi-arch workshop consists of two modules:
+Graviton multi-arch workshop consists of two modules.
 * [Module 1-Mixed-architecture Auto Scaling group for running a multi-arch application](#module-1-deploy-and-run-a-multi-arch-application-on-a-mixed-arch-auto-scaling-group-with-x86-and-graviton-instances)
 * [Module 2-Mixed-architecture Amazon EKS cluster for running multi-arch container](#module-2-build-deploy-and-run-multi-arch-containers-on-a-multi-arch-amazon-eks-cluster-with-x86-and-graviton-instances)
+
+For smooth operation of workshop, it is recommended to follow both modules 1 and 2 in the same sequence as some prerequisites have been completed in module 1 for module 2.
 
 # Contents
 * [Know your pre-deployed workshop environment](#know-your-pre-deployed-workshop-environment-prerequisites)
@@ -46,6 +48,10 @@ The output assumed-role ARN should contain TeamRole and Instance ID like below:
 "Arn": "arn:aws:sts::{ACCOUNT_ID}:assumed-role/TeamRole/{Instance_ID}"
 ```
 
+### Resize Cloud9 Instance Root Volume to 100 GiB
+The default 10GB may not be enough to build your application docker images. Thus, let us resize the EBS volume used by the Cloud9 instance using below link:
+
+https://ec2spotworkshops.com/ecs-spot-capacity-providers/workshopsetup/resize_ebs.html
 
 ### Let's now clone workshop repo to Cloud9
 
@@ -53,8 +59,7 @@ The output assumed-role ARN should contain TeamRole and Instance ID like below:
 git clone https://github.com/ashwinikumar-sa/graviton-multiarch-workshop.git
 cd graviton-multiarch-workshop 
 ```
-## Module-1: Deploy and run a multi-arch application on a mixed-arch Auto Scaling group (with x86 and Graviton instances) 
-In this module of the workshop, you will deploy a mixed architecture Auto Scaling group with x86 and Graviton instances. You will be deploying a sample node.js application with node.js dependencies with user data script by modifying launch templates.
+### Let's store CloudFormation stack outputs to some environment variables for using throughout workshop:
 
 ```bash
 export AWS_REGION=$(curl --silent http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r .region)
@@ -69,8 +74,10 @@ done
 export tg_arn=$(aws elbv2 describe-target-groups --names $stack_name --query TargetGroups[].TargetGroupArn --output text)
 ```
 
+## Module-1: Deploy and run a multi-arch application on a mixed-arch Auto Scaling group (with x86 and Graviton instances) 
+In this module of the workshop, you will deploy a mixed architecture Auto Scaling group with x86 and Graviton instances. You will be deploying a sample node.js application with node.js dependencies with user data script by modifying launch templates.
 
-### Step 2: Create Auto Scaling group
+### Step 1: Create Auto Scaling group
 ```bash
 sed -i.bak -e "s#%TargetGroupARN%#$tg_arn#g" -e "s/%publicSubnet1%/$publicSubnet1/g" -e "s/%publicSubnet2%/$publicSubnet2/g" -e "s/%publicSubnet3%/$publicSubnet3/g" asg-config-multiarch.json
 ```
@@ -287,3 +294,75 @@ eksctl create nodegroup --config-file=add-mng-gv2.yaml
 ```bash
 eksctl create nodegroup --config-file=add-mng-x86.yaml
 ```
+### Let's now check nodes available in EKS cluster along with their CPU architectures.
+```bash
+kubectl get nodes --label-columns=kubernetes.io/arch
+```
+You can visualize same with kube-ops-view:
+```bash
+kubectl get svc kube-ops-view | tail -n 1 | awk '{ print "Kube-ops-view URL = http://"$4 }'
+```
+This will display a line similar to Kube-ops-view URL = http://<URL_PREFIX_ELB>.amazonaws.com Opening the URL in your browser will provide the current state of our cluster. You can see two new nodes created with m5.xlarge (x86_64) and m6g.xlarge (ARM64) instance types.
+
+### Install Docker Buildx and configure for building images for multiple target architectures
+We will now use the Docker Buildx CLI plug-in that extends the Docker command to transparently build multi-arch images, link them together with a manifest file, and push them all to Amazon ECR repository using a single command. Let's install Buildx first.
+```bash
+wget https://github.com/docker/buildx/releases/download/v0.8.2/buildx-v0.8.2.linux-amd64
+mkdir -p ~/.docker/cli-plugins
+mv buildx-v0.8.2.linux-amd64 buildx
+mv buildx ~/.docker/cli-plugins/docker-buildx
+chmod a+x ~/.docker/cli-plugins/docker-buildx
+```
+Enter the following command to configure Buildx binary for different architectures. The following command installs emulators so that you can run and build containers for x86 and Arm64.
+```bash
+docker run --privileged --rm tonistiigi/binfmt --install all
+```
+
+Check to see a list of build environments. If this is first time, you should only see the default builder.
+```bash
+docker buildx ls
+```
+We recommend using new builder. Enter the following command to create a new builder named mybuild and switch to it to use it as default. The bootstrap flag ensures that the driver is running.
+```bash
+docker buildx create --name mybuild --use
+docker buildx inspect --bootstrap
+docker buildx ls
+```
+
+### Create multi-arch images for x86 and Arm64 platforms and push them to your Amazon ECR repository
+Interpreted and bytecode-compiled languages such as Java and Node.js tend to work without any code modifications, unless they are pulling in any native binary extensions. In order to run a Node.js docker image on both x86 and Arm64, you must build images for those two architectures. Using Docker Buildx, you can build images for both x86 and Arm64 then push those container images to Amazon ECR at the same time.
+
+Check your ECR repository named "myrepo" available in pre-deployed workshop environment:
+
+```bash
+aws ecr describe-repositories
+```
+
+Now, authenticate your Docker client to your Amazon ECR registry so that you can use the docker push commands to push images to the repositories. Enter the following command to retrieve an authentication token and authenticate your Docker client to your Amazon ECR registry. 
+
+```bash
+aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+```
+
+Explore your application files to build container images:
+* app.js
+* Dockerfile
+* package.json
+
+Now run following command to create a package-lock.json file:
+```bash
+npm install
+```
+
+Now, create your multi-arch images with the docker buildx. This single command instructs Buildx to create images for x86 and Arm64 architecture, generate a multi-arch manifest and push all images to your myrepo Amazon ECR registry.
+
+```bash
+docker buildx build --platform linux/amd64,linux/arm64 --tag ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/myrepo:latest --push .
+```
+Inspect the manifest and images created:
+
+```bash
+docker buildx imagetools inspect ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/myrepo:latest
+```
+### Let's now deploy and run multi-arch container images on our mixed-arch Amazon EKS cluster
+
