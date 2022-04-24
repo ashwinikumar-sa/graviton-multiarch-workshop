@@ -1,9 +1,7 @@
 # graviton-multiarch-workshop
-Graviton multi-arch workshop
-## Module-1: Deploy and run a multi-arch application on a mixed-arch Auto Scaling group (with x86 and Graviton instances) 
-In this module of the workshop, you will deploy a mixed architecture Auto Scaling group with x86 and Graviton instances. You will be deploying a sample node.js application with node.js dependencies with user data script by modifying launch templates.
+Graviton multi-arch workshop consists of two modules below. We recommend completing the workshop with both modules in same sequence as some steps like cloning the workshop directory are executed in Module 1 and not repeated in Module 2 instructions to avoid duplication of steps.
 
-### Know your workshop environment (Prerequisites)
+### Know your pre-deployed workshop environment (Prerequisites)
 The workshop account is pre-deployed with following:
 
 •	Region: us-west-2
@@ -18,15 +16,36 @@ The workshop account is pre-deployed with following:
 
 •	2 Launch Templates with Graviton and x86 compatible Amazon Machine Images (AMIs)
 
-### Step 1: Go to Cloud9 IDE
+### Go to Cloud9 IDE
 
 ![image](https://user-images.githubusercontent.com/75417152/163193042-41ca1705-a8d8-48ac-995e-4ae8fe43339b.png)
 
+### Update IAM Settings for your workspace
+Note: Cloud9 normally manages IAM credentials dynamically. This isn’t currently compatible with the EKS IAM authentication, so we will disable it and rely on the IAM role instead.
+
+### Return to your workspace and click the sprocket, or launch a new tab to open the Preferences tab -> Select AWS SETTINGS -> Turn off AWS managed temporary credentials -> Close the Preferences tab
+
+<img width="1434" alt="Cloud9preferences" src="https://user-images.githubusercontent.com/75417152/164973198-049fd685-5e70-40f5-810a-df1a9560aa4d.png">
+
+### Validate IAM role
+Use the GetCallerIdentity CLI command to validate that the Cloud9 IDE is using the correct IAM role.
+```bash
+aws sts get-caller-identity
+```
+The output assumed-role ARN should contain TeamRole and Instance ID like below:
+```bash
+"Arn": "arn:aws:sts::{ACCOUNT_ID}:assumed-role/TeamRole/{Instance_ID}"
+```
+
+
+### Let's now clone workshop repo to Cloud9
 
 ```bash
 git clone https://github.com/ashwinikumar-sa/graviton-multiarch-workshop.git
 cd graviton-multiarch-workshop 
 ```
+## Module-1: Deploy and run a multi-arch application on a mixed-arch Auto Scaling group (with x86 and Graviton instances) 
+In this module of the workshop, you will deploy a mixed architecture Auto Scaling group with x86 and Graviton instances. You will be deploying a sample node.js application with node.js dependencies with user data script by modifying launch templates.
 
 ```bash
 export AWS_REGION=$(curl --silent http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r .region)
