@@ -290,3 +290,14 @@ eksctl create nodegroup --config-file=add-mng-gv2.yaml
 ```bash
 eksctl create nodegroup --config-file=add-mng-x86.yaml
 ```
+### Let's now check nodes available in EKS cluster along with their CPU architectures.
+```bash
+kubectl get nodes --label-columns=kubernetes.io/arch
+```
+You can visualize same with kube-ops-view:
+```bash
+kubectl get svc kube-ops-view | tail -n 1 | awk '{ print "Kube-ops-view URL = http://"$4 }'
+```
+This will display a line similar to Kube-ops-view URL = http://<URL_PREFIX_ELB>.amazonaws.com Opening the URL in your browser will provide the current state of our cluster. You can see two new nodes created with m5.xlarge (x86_64) and m6g.xlarge (ARM64) instance types.
+
+
