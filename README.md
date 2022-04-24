@@ -1,5 +1,7 @@
 # Multi-architecture workshop with Graviton and x86 architectures
-Graviton multi-arch workshop consists of two modules below. We recommend completing the workshop with both modules in same sequence as some steps like cloning the workshop directory are executed in Module 1 and not repeated in Module 2 instructions to avoid duplication of steps.
+Graviton multi-arch workshop consists of two modules.
+* [Module 1-Mixed-architecture Auto Scaling group for running a multi-arch application](https://github.com/ashwinikumar-sa/graviton-multiarch-workshop/blob/main/README.md#module-1-deploy-and-run-a-multi-arch-application-on-a-mixed-arch-auto-scaling-group-with-x86-and-graviton-instances)
+* [Module 2-Mixed-architecture Amazon EKS cluster for running multi-arch container](https://github.com/ashwinikumar-sa/graviton-multiarch-workshop/edit/main/README.md#module-2-build-deploy-and-run-multi-arch-containers-on-a-multi-arch-amazon-eks-cluster-with-x86-and-graviton-instances)
 
 # Contents
 * [Know your pre-deployed workshop environment](https://github.com/ashwinikumar-sa/graviton-multiarch-workshop/edit/main/README.md#know-your-pre-deployed-workshop-environment-prerequisites)
