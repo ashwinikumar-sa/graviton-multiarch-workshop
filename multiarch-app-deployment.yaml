@@ -1,0 +1,38 @@
+---
+apiVersion: v1
+kind: Service 
+metadata: 
+  name: multiarch-app 
+spec: 
+  type: LoadBalancer 
+  ports: 
+    - port: 80
+      targetPort: 80 
+  selector: 
+    app: multiarch-app 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multiarch-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: multiarch-app
+  template:
+    metadata:
+      labels:
+        app: multiarch-app
+    spec:
+      nodeSelector:
+        intent: mng-multiarch-apps
+      containers:
+        - name: multiarch-app
+          image: {Put Acoount ID here}.dkr.ecr.us-west-2.amazonaws.com/myrepo:latest
+          resources:
+            requests:
+              cpu: 2
+              memory: 4Gi
+          ports: 
+            - containerPort: 80
