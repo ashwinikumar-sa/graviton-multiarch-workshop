@@ -55,8 +55,7 @@ The output assumed-role ARN should contain TeamRole and Instance ID like below:
 git clone https://github.com/ashwinikumar-sa/graviton-multiarch-workshop.git
 cd graviton-multiarch-workshop 
 ```
-## Module-1: Deploy and run a multi-arch application on a mixed-arch Auto Scaling group (with x86 and Graviton instances) 
-In this module of the workshop, you will deploy a mixed architecture Auto Scaling group with x86 and Graviton instances. You will be deploying a sample node.js application with node.js dependencies with user data script by modifying launch templates.
+### Let's store CloudFormation stack outputs to some environment variables for using throughout workshop:
 
 ```bash
 export AWS_REGION=$(curl --silent http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r .region)
@@ -71,8 +70,10 @@ done
 export tg_arn=$(aws elbv2 describe-target-groups --names $stack_name --query TargetGroups[].TargetGroupArn --output text)
 ```
 
+## Module-1: Deploy and run a multi-arch application on a mixed-arch Auto Scaling group (with x86 and Graviton instances) 
+In this module of the workshop, you will deploy a mixed architecture Auto Scaling group with x86 and Graviton instances. You will be deploying a sample node.js application with node.js dependencies with user data script by modifying launch templates.
 
-### Step 2: Create Auto Scaling group
+### Step 1: Create Auto Scaling group
 ```bash
 sed -i.bak -e "s#%TargetGroupARN%#$tg_arn#g" -e "s/%publicSubnet1%/$publicSubnet1/g" -e "s/%publicSubnet2%/$publicSubnet2/g" -e "s/%publicSubnet3%/$publicSubnet3/g" asg-config-multiarch.json
 ```
