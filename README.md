@@ -15,17 +15,19 @@ For smooth operation of workshop, it is recommended to follow both modules 1 and
 ### Know your pre-deployed workshop environment (Prerequisites)
 The workshop account is pre-deployed with following:
 
-•	Region: us-west-2
+* Region: us-west-2
 
-•	Cloud9 environment
+* Cloud9 environment pre-installed with utility tools like AWS CLI, kubectl, eksctl etc.
 
-•	A VPC with 6 subnets; 3 public and 3 private subnets
+* A VPC with 6 subnets; 3 public and 3 private subnets
 
-•	Application Load Balancer (ALB) with its own security group
+* Application Load Balancer (ALB) with its own security group
 
-•	Target Group and an ALB listener
+* Target Group and an ALB listener
 
-•	2 Launch Templates with Graviton and x86 compatible Amazon Machine Images (AMIs)
+* 2 Launch Templates with Graviton and x86 compatible Amazon Machine Images (AMIs)
+
+* An EKS cluster with 2 management nodes (for installing monitoring tools etc)
 
 ### Go to Cloud9 IDE
 
@@ -76,6 +78,8 @@ export tg_arn=$(aws elbv2 describe-target-groups --names $stack_name --query Tar
 
 ## Module-1: Deploy and run a multi-arch application on a mixed-arch Auto Scaling group (with x86 and Graviton instances) 
 In this module of the workshop, you will deploy a mixed architecture Auto Scaling group with x86 and Graviton instances. You will be deploying a sample node.js application with node.js dependencies with user data script by modifying launch templates.
+![image](https://user-images.githubusercontent.com/75417152/164983418-05f26d68-46d7-4450-a318-6c88cb390aac.png)
+
 
 ### Step 1: Create Auto Scaling group
 ```bash
@@ -192,6 +196,9 @@ aws autoscaling start-instance-refresh \
 
 ## Module-2: Build, deploy and run multi-arch containers on a multi-arch Amazon EKS cluster (with x86 and Graviton instances)
 In this module of the workshop, you will be creating EKS managed node groups with Graviton and x86 instances in an Amazon EKS cluster. Then, you will build a multi-arch container image of a sample node.js application for x86_64 and arm64 target architectures and store it on Amazon ECR with a single manifest list. Finally,  you will be deploying pods with multi-arch container image on x86 and Graviton based nodes on EKS cluster
+
+![image](https://user-images.githubusercontent.com/75417152/164983321-19ba8862-0cc7-4a58-a902-c1160be001e0.png)
+
 
 ### Step 1: Check the Amazon EKS cluster
 ```bash
@@ -365,4 +372,65 @@ Inspect the manifest and images created:
 docker buildx imagetools inspect ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/myrepo:latest
 ```
 ### Let's now deploy and run multi-arch container images on our mixed-arch Amazon EKS cluster
+Explore your Kubernetes service and pod deployment config.
+
+### Check "multiarch-app-deployment.yaml" file and update container image URI with your {ACCOUNT_ID}
+
+```bash
+---
+apiVersion: v1
+kind: Service 
+metadata: 
+  name: multiarch-app 
+spec: 
+  type: LoadBalancer 
+  ports: 
+    - port: 80
+      targetPort: 80 
+  selector: 
+    app: multiarch-app 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multiarch-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: multiarch-app
+  template:
+    metadata:
+      labels:
+        app: multiarch-app
+    spec:
+      nodeSelector:
+        intent: mng-multiarch-apps
+      containers:
+        - name: multiarch-app
+          image: {Put your Account ID}.dkr.ecr.us-west-2.amazonaws.com/myrepo:latest
+          resources:
+            requests:
+              cpu: 2
+              memory: 4Gi
+          ports: 
+            - containerPort: 80
+```
+
+### Deploy Kubernetes service with a load balancer and deploy multi-arch container app with 2 replicas on EKS cluster
+```bash
+kubectl apply -f multiarch-app-deployment.yaml
+kubectl get svc multiarch-app | tail -n 1 | awk '{ print "multiarch-app URL = http://"$4 }'
+```
+This will display a line similar to multiarch-app URL = http://<URL_PREFIX_ELB>.amazonaws.com Open your browser and paste this Load Balancer DNS name url. Refresh to see the output from your multi-arch container app switching between x86 and Graviton2 instances.
+![image](https://user-images.githubusercontent.com/75417152/164982645-ecb24afb-3dcc-4ce1-8e7e-c64c9828a640.png)
+
+![image](https://user-images.githubusercontent.com/75417152/164982676-20c2660b-7c9b-418f-ad6f-e87f2f38befa.png)
+
+You can also visualize your pods with multi-arch container image running on x86 and Graviton instances in EKS cluster with KUBE-OPS-VIEW:
+```bash
+kubectl get svc kube-ops-view | tail -n 1 | awk '{ print "Kube-ops-view URL = http://"$4 }'
+```
+
+![image](https://user-images.githubusercontent.com/75417152/164983135-d32fde7b-abea-41db-a3b4-4f09eca65c73.png)
 
