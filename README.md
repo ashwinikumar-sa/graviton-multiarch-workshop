@@ -359,3 +359,10 @@ Now, create your multi-arch images with the docker buildx. This single command i
 ```bash
 docker buildx build --platform linux/amd64,linux/arm64 --tag ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/myrepo:latest --push .
 ```
+Inspect the manifest and images created:
+
+```bash
+docker buildx imagetools inspect ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/myrepo:latest
+```
+### Let's now deploy and run multi-arch container images on our mixed-arch Amazon EKS cluster
+
