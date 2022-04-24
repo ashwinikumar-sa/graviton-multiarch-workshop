@@ -177,13 +177,22 @@ aws autoscaling start-instance-refresh \
 ## Module-2: Build, deploy and run multi-arch containers on a multi-arch Amazon EKS cluster (with x86 and Graviton instances)
 In this module of the workshop, you will be creating EKS managed node groups with Graviton and x86 instances in an Amazon EKS cluster. Then, you will build a multi-arch container image of a sample node.js application for x86_64 and arm64 target architectures and store it on Amazon ECR with a single manifest list. Finally,  you will be deploying pods with multi-arch container image on x86 and Graviton based nodes on EKS cluster
 
-### Step 1: Check the EKS cluster
+### Step 1: Check the Amazon EKS cluster
 ```bash
 eksctl get cluster
 kubectl get nodes
 ```
+You should see two nodes running in the EKS cluster. Let's now install some Kubernetes tools in the EKS cluster
 
-### Step 2: Create two Managed Node groups with Graviton and x86 based instances in Amazon EKS cluster
+### Step 2: Install Helm CLI
+Please follow instructions below:
+
+https://ec2spotworkshops.com/using_ec2_spot_instances_with_eks/030_k8s_tools/helm_deploy.html
+
+### Step 3: Install KUBE-OPS-VIEW
+https://ec2spotworkshops.com/using_ec2_spot_instances_with_eks/030_k8s_tools/install_kube_ops_view.html
+
+### Step 4: Create two Managed Node groups with Graviton and x86 based instances in Amazon EKS cluster
 To create a Graviton based nodegroup, kube-proxy, coredns and aws-node addons should be up to date. Please use below eksctl commands to update them.
 
 ```bash
