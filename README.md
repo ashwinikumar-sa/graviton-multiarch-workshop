@@ -527,9 +527,10 @@ kubectl get svc kube-ops-view | tail -n 1 | awk '{ print "Kube-ops-view URL = ht
 # Additional Resources:
 Blog: https://aws.amazon.com/blogs/containers/deploy-a-spring-boot-application-on-a-multi-architecture-amazon-eks-cluster/
 
-Containers on Graviton: https://github.com/aws/aws-graviton-getting-started/blob/main/containers.md
+Blog: https://aws.amazon.com/blogs/devops/creating-multi-architecture-docker-images-to-support-graviton2-using-aws-codebuild-and-aws-codepipeline/
 
 Blog: https://www.docker.com/blog/multi-platform-docker-builds/
 
-Graviton Workshop: https://graviton2-workshop.workshop.aws/en/amazoncontainers.html
+Containers on Graviton: https://github.com/aws/aws-graviton-getting-started/blob/main/containers.md
 
+Graviton Workshop: https://graviton2-workshop.workshop.aws/en/amazoncontainers.html
