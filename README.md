@@ -5,6 +5,10 @@ Graviton multi-arch workshop consists of two modules.
 
 For smooth operation of workshop, it is recommended to follow both modules 1 and 2 in the same sequence as some prerequisites have been completed in module 1 for module 2.
 
+# How to access the workshop in an AWS event
+* Please click on the event URL shared by us - https://dashboard.eventengine.run/login
+
+
 # Contents
 * [Know your pre-deployed workshop environment](#know-your-pre-deployed-workshop-environment-prerequisites)
 * [Go to Cloud9 IDE](#go-to-cloud9-ide)
