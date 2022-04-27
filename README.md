@@ -518,3 +518,18 @@ kubectl get svc kube-ops-view | tail -n 1 | awk '{ print "Kube-ops-view URL = ht
 
 ![image](https://user-images.githubusercontent.com/75417152/164983135-d32fde7b-abea-41db-a3b4-4f09eca65c73.png)
 
+
+# Key Takeaways
+* You learnt how to configure your Auto Scaling group to use both Graviton2 and x86 based instances in the same Auto Scaling group with different AMIs using multiple launch templates
+* You also deployed node.js application using launch template user data with two different launch templates (installing x86 and arm64 compatible binaries)
+* You learnt how to build multi-architecture docker containers for your node.js application using Buildx, push and store them on Amazon ECR and deploy them on a mixed-arch EKS cluster running Graviton and x86 instances
+
+# Additional Resources:
+Blog: https://aws.amazon.com/blogs/containers/deploy-a-spring-boot-application-on-a-multi-architecture-amazon-eks-cluster/
+
+Containers on Graviton: https://github.com/aws/aws-graviton-getting-started/blob/main/containers.md
+
+Blog: https://www.docker.com/blog/multi-platform-docker-builds/
+
+Graviton Workshop: https://graviton2-workshop.workshop.aws/en/amazoncontainers.html
+
