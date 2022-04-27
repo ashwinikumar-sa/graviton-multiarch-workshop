@@ -239,7 +239,29 @@ source <(helm completion bash)
 ```
 
 ### Step 3: Install KUBE-OPS-VIEW
-https://ec2spotworkshops.com/using_ec2_spot_instances_with_eks/030_k8s_tools/install_kube_ops_view.html
+Now that we have helm installed, we are ready to use the stable helm catalog and install tools that will help with understanding our cluster setup in a visual way. The first of those tools that we are going to install is Kube-ops-view from Henning Jacobs.
+
+The following line updates the stable helm repository and then installs kube-ops-view using a LoadBalancer Service type and creating a RBAC (Resource Base Access Control) entry for the read-only service account to read nodes and pods information from the cluster.
+```bash
+helm install kube-ops-view \
+stable/kube-ops-view \
+--set service.type=LoadBalancer \
+--set nodeSelector.intent=control-apps \
+--version 1.2.4 \
+--set rbac.create=True
+```
+The execution above installs kube-ops-view exposing it through a Service using the LoadBalancer type. A successful execution of the command will display the set of resources created and will prompt some advice asking you to use kubectl proxy and a local URL for the service. Given we are using the type LoadBalancer for our service, we can disregard this; Instead we will point our browser to the external load balancer.
+
+Let's check that chart was installed successfully:
+```bash
+helm list
+```
+Now, we can explore kube-ops-view output by checking the details about the newly created service.
+```bash
+kubectl get svc kube-ops-view | tail -n 1 | awk '{ print "Kube-ops-view URL = http://"$4 }'
+```
+This will display a line similar to Kube-ops-view URL = http://<URL_PREFIX_ELB>.amazonaws.com Opening the URL in your browser will provide the current state of our cluster. Check out different components
+![image](https://user-images.githubusercontent.com/75417152/165549692-32d52652-46dd-4ea8-81e4-2928a6965b47.png)
 
 ### Step 4: Create two Managed Node groups with Graviton and x86 based instances in Amazon EKS cluster
 To create a Graviton based nodegroup, kube-proxy, coredns and aws-node addons should be up to date. Please use below eksctl commands to update them.
