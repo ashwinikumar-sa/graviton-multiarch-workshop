@@ -152,6 +152,8 @@ server.listen(port, () => {
 ```
 
 ### Step 3: Let's modify Launch Templates with user data to install our app
+Once you click on modify template, scroll to the bottom of the page and expand the Advanced Tab to find the user-data section and populate with below user-data:
+
 ### Step 3.1: Modify x86 Launch Template (create new version)
 
 ![image](https://user-images.githubusercontent.com/75417152/163204637-e7d24ab0-44a1-450b-95e3-ed81a7f4e88c.png)
