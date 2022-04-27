@@ -7,7 +7,7 @@ For smooth operation of workshop, it is recommended to follow both modules 1 and
 
 # How to access the workshop in an AWS event
 * Please click on this event URL (Right click and open in new tab) - https://dashboard.eventengine.run/login
-* Enter the event hash (12 or 16 digit). All the participants to use the same Hash code and click Accept Terms and Login. 
+* Enter the event hash (12 or 16 digit event hash to be provided by us). All the participants to use the same Hash code and click Accept Terms and Login. 
 ```diff
 - Please do not share the Hash code outside the event as we have limited AWS accounts created for this event
 ```
