@@ -6,7 +6,37 @@ Graviton multi-arch workshop consists of two modules.
 For smooth operation of workshop, it is recommended to follow both modules 1 and 2 in the same sequence as some prerequisites have been completed in module 1 for module 2.
 
 # How to access the workshop in an AWS event
-* Please click on the event URL shared by us - https://dashboard.eventengine.run/login
+* Please click on this event URL - https://dashboard.eventengine.run/login
+* Enter the event hash (12 or 16 digit). All the participants to use the same Hash code and click Accept Terms and Login. 
+```diff
+- Please do not share the Hash code outside the event as we have limited AWS accounts created for this event
+```
+
+![image](https://user-images.githubusercontent.com/75417152/165553329-55c2e644-41dc-4159-8d78-01b0103faba0.png)
+
+* Now on the next page, select – “Email One-Time Password (OTP)”
+
+![image](https://user-images.githubusercontent.com/75417152/165553745-dfaed528-9d80-41ed-90bd-8271778f3ef9.png)
+
+* Enter your official or personal email id (email account you can easily access) and click Send passcode. 
+```diff
+- Note: Please use same email id to get OTP to access your workshop account if logged out and need to access again 
+- (Email account gets mapped to your AWS account)
+```
+
+![image](https://user-images.githubusercontent.com/75417152/165554098-5f6ab730-fd00-407f-9171-d89d47dc882d.png)
+
+* Grab your On-time passcode from your email (please also check spam folder for it if not found in inbox) and use this to sign-in. You will be taken to an Event Dashboard as below. Please click on “Set Team Name” and enter your name (this is recommended to enter your name to map it with your account so that we can help you troubleshoot in case of any challenges during workshop). Click on "AWS Console" below:
+
+![image](https://user-images.githubusercontent.com/75417152/165557086-9abfcfb3-3666-4fca-ba16-3b162359af45.png)
+
+* You will be taken to the following screen. Please click on “Open AWS Console”:
+
+![image](https://user-images.githubusercontent.com/75417152/165557558-deecccae-2122-4617-b01f-ac0e10d0437c.png)
+
+* You will be taken to the AWS Console
+
+![image](https://user-images.githubusercontent.com/75417152/165558078-b33344e5-789e-468d-911a-28af3d11afa0.png)
 
 
 # Contents
