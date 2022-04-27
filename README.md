@@ -96,7 +96,7 @@ Go to AWS console and see that ASG "asg-mixed-arch" is created. There should be 
 Please feel free to explore Launch Templates in Console:
 ![image](https://user-images.githubusercontent.com/75417152/163200439-04615c20-e5d2-4cba-8795-361e54fd895e.png)
 
-### Step 3: Let's explore a sample node.js app
+### Step 2: Let's explore a sample node.js app
 ```bash
 cat app.js
 ```
@@ -117,8 +117,8 @@ server.listen(port, () => {
 });
 ```
 
-### Step 4: Let's modify Launch Templates with user data to install our app
-### Step 4.1: Modify x86 Launch Template (create new version)
+### Step 3: Let's modify Launch Templates with user data to install our app
+### Step 3.1: Modify x86 Launch Template (create new version)
 
 ![image](https://user-images.githubusercontent.com/75417152/163204637-e7d24ab0-44a1-450b-95e3-ed81a7f4e88c.png)
 
@@ -138,13 +138,13 @@ git clone https://github.com/ashwinikumar-sa/graviton-multiarch-workshop
 cd graviton-multiarch-workshop
 node app.js
 ```
-### Step 4.2: Set latest version as Default version
+### Step 3.2: Set latest version as Default version
 ![image](https://user-images.githubusercontent.com/75417152/163228623-26dddbbd-9a65-47e1-8650-bd613ee9fe64.png)
 ![image](https://user-images.githubusercontent.com/75417152/163228839-0f667d2e-8cba-427d-ac79-3e6a3bd31316.png)
 ![image](https://user-images.githubusercontent.com/75417152/163230448-21c9e714-deaa-49a3-aaa8-478579b72b4e.png)
 
 
-### Step 4.3: Modify Graviton Launch Template (create new version)
+### Step 3.3: Modify Graviton Launch Template (create new version)
 
 ![image](https://user-images.githubusercontent.com/75417152/163206210-be0dbd6c-50aa-496c-941f-b0f6e385f72a.png)
 
@@ -164,26 +164,26 @@ git clone https://github.com/ashwinikumar-sa/graviton-multiarch-workshop
 cd graviton-multiarch-workshop
 node app.js
 ```
-### Step 4.4: Set latest version to default version for this Launch Template as well (same as Step 4.2)
+### Step 3.4: Set latest version to default version for this Launch Template as well (same as Step 4.2)
 ![image](https://user-images.githubusercontent.com/75417152/163230229-97165501-ac7d-4cd6-88ad-cf9a9bd32acb.png)
 
 
 
-### Step 5: Refresh the instances in ASG to use modified version of the launch template and install node.js app
+### Step 4: Refresh the instances in ASG to use modified version of the launch template and install node.js app
 ```bash
 aws autoscaling start-instance-refresh \
 --auto-scaling-group-name asg-mixed-arch \
 --preferences '{"InstanceWarmup": 0, "MinHealthyPercentage": 0}'
 ```
 
-### Step 6: check that instances are healthy in Target group
+### Step 5: check that instances are healthy in Target group
 
 ![image](https://user-images.githubusercontent.com/75417152/163221701-2fa7210e-16b9-422c-b714-84cd7fadcef0.png)
 
 ![image](https://user-images.githubusercontent.com/75417152/163221811-76952a67-447e-4697-8aff-749e48e89a60.png)
 
 
-### Step 7: Let's see how app is running on mixed instances (x86 and Graviton) behind load balancer
+### Step 6: Let's see how app is running on mixed instances (x86 and Graviton) behind load balancer
 ![image](https://user-images.githubusercontent.com/75417152/163224071-fd578fcd-830c-4447-90fa-146f73b597bc.png)
 
 ![image](https://user-images.githubusercontent.com/75417152/163224196-6ef45418-1ced-4cc3-95da-11ea154878ae.png)
@@ -208,9 +208,35 @@ kubectl get nodes
 You should see two nodes running in the EKS cluster. Let's now install some Kubernetes tools in the EKS cluster
 
 ### Step 2: Install Helm CLI
-Please follow instructions below:
+Helm is a package manager for Kubernetes that packages multiple Kubernetes resources into a single logical deployment unit called Chart.
 
-https://ec2spotworkshops.com/using_ec2_spot_instances_with_eks/030_k8s_tools/helm_deploy.html
+Helm is a tool that streamlines installing and managing Kubernetes applications. Think of it like apt/yum/homebrew for Kubernetes. We will use Helm during the workshop to install other components out from the list of available charts. To install, please follow instructions below:
+
+```bash
+curl -sSL https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+```
+Verify the version
+```bash
+helm version --short
+```
+Let’s configure our first Chart repository. Chart repositories are similar to APT or yum repositories that you might be familiar with on Linux, or Taps for Homebrew on macOS.
+
+Download the stable repository so we have something to start with:
+```bash
+helm repo add stable https://charts.helm.sh/stable/
+helm repo update
+```
+List the helm charts you can install:
+```bash
+helm search repo stable
+```
+Finally, let’s configure Bash completion for the helm command:
+```bash
+helm completion bash >> ~/.bash_completion
+. /etc/profile.d/bash_completion.sh
+. ~/.bash_completion
+source <(helm completion bash)
+```
 
 ### Step 3: Install KUBE-OPS-VIEW
 https://ec2spotworkshops.com/using_ec2_spot_instances_with_eks/030_k8s_tools/install_kube_ops_view.html
@@ -311,7 +337,7 @@ kubectl get svc kube-ops-view | tail -n 1 | awk '{ print "Kube-ops-view URL = ht
 ```
 This will display a line similar to Kube-ops-view URL = http://<URL_PREFIX_ELB>.amazonaws.com Opening the URL in your browser will provide the current state of our cluster. You can see two new nodes created with m5.xlarge (x86_64) and m6g.xlarge (ARM64) instance types.
 
-### Install Docker Buildx and configure for building images for multiple target architectures
+### Step 5: Install Docker Buildx and configure for building images for multiple target architectures
 We will now use the Docker Buildx CLI plug-in that extends the Docker command to transparently build multi-arch images, link them together with a manifest file, and push them all to Amazon ECR repository using a single command. Let's install Buildx first.
 ```bash
 wget https://github.com/docker/buildx/releases/download/v0.8.2/buildx-v0.8.2.linux-amd64
@@ -336,7 +362,7 @@ docker buildx inspect --bootstrap
 docker buildx ls
 ```
 
-### Create multi-arch images for x86 and Arm64 platforms and push them to your Amazon ECR repository
+### Step 6: Create multi-arch images for x86 and Arm64 platforms and push them to your Amazon ECR repository
 Interpreted and bytecode-compiled languages such as Java and Node.js tend to work without any code modifications, unless they are pulling in any native binary extensions. In order to run a Node.js docker image on both x86 and Arm64, you must build images for those two architectures. Using Docker Buildx, you can build images for both x86 and Arm64 then push those container images to Amazon ECR at the same time.
 
 Check your ECR repository named "myrepo" available in pre-deployed workshop environment:
@@ -371,7 +397,7 @@ Inspect the manifest and images created:
 ```bash
 docker buildx imagetools inspect ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/myrepo:latest
 ```
-### Let's now deploy and run multi-arch container images on our mixed-arch Amazon EKS cluster
+### Step 7: Let's now deploy and run multi-arch container images on our mixed-arch Amazon EKS cluster
 Explore your Kubernetes service and pod deployment config.
 
 ### Check "multiarch-app-deployment.yaml" file and update container image URI with your {ACCOUNT_ID}
