@@ -239,6 +239,7 @@ In this module of the workshop, you will be creating EKS managed node groups wit
 ### Step 1: Check the Amazon EKS cluster
 ```bash
 eksctl get cluster
+aws eks update-kubeconfig --name eksworkshop-eksctl
 kubectl get nodes
 ```
 You should see two nodes running in the EKS cluster. Let's now install some Kubernetes tools in the EKS cluster
