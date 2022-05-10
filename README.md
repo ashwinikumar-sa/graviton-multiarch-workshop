@@ -3,7 +3,7 @@ Graviton multi-arch workshop consists of two modules.
 * [Module 1-Mixed-architecture Auto Scaling group for running a multi-arch application](#module-1-deploy-and-run-a-multi-arch-application-on-a-mixed-arch-auto-scaling-group-with-x86-and-graviton-instances)
 * [Module 2-Mixed-architecture Amazon EKS cluster for running multi-arch container](#module-2-build-deploy-and-run-multi-arch-containers-on-a-multi-arch-amazon-eks-cluster-with-x86-and-graviton-instances)
 
-For smooth operation of workshop, it is recommended to follow both modules 1 and 2 in the same sequence as some prerequisites have been completed in module 1 for module 2.
+#### For smooth operation of workshop, it is recommended to follow both modules 1 and 2 in the same sequence as some prerequisites have been completed in module 1 for module 2.
 
 # How to access the workshop in an AWS event
 * Please click on this event URL (Right click and open in new tab) - https://dashboard.eventengine.run/login
@@ -44,10 +44,13 @@ For smooth operation of workshop, it is recommended to follow both modules 1 and
 * [Go to Cloud9 IDE](#go-to-cloud9-ide)
 * [Update IAM settings of your workspace](#update-iam-settings-for-your-workspace)
 * [Validate IAM Role](#validate-iam-role)
+* [Resize Cloud9 instance](#resize-cloud9-instance-root-volume-to-100-gib)
+* [Clone workshop repo on Cloud9](#lets-now-clone-workshop-repo-to-cloud9)
+* [Module 1-Mixed-architecture Auto Scaling group for running a multi-arch application](#module-1-deploy-and-run-a-multi-arch-application-on-a-mixed-arch-auto-scaling-group-with-x86-and-graviton-instances)
 
 
 ### Know your pre-deployed workshop environment (Prerequisites)
-The workshop account is pre-deployed with following:
+The workshop account is pre-deployed with following components:
 
 * Region: us-west-2
 
@@ -62,6 +65,13 @@ The workshop account is pre-deployed with following:
 * 2 Launch Templates with Graviton and x86 compatible Amazon Machine Images (AMIs)
 
 * An EKS cluster with 2 management nodes (for installing monitoring tools etc)
+
+In CloudFormation console, you should be able to see four (4) CloudFormation stacks created in your account as shown below.
+
+#### Note: If any of the below stacks is missing, please ask AWS support team for help in troubleshooting or giving you access to another account.
+
+![image](https://user-images.githubusercontent.com/75417152/167646245-85caa265-a171-4814-9690-c802304f4249.png)
+
 
 ### Go to Cloud9 IDE
 
