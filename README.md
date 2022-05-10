@@ -99,7 +99,7 @@ cd graviton-multiarch-workshop
 
 ```bash
 export AWS_REGION=$(curl --silent http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r .region)
-export stack_name=$(aws cloudformation describe-stacks --query 'Stacks[3].StackName' --output text)
+export stack_name=$(aws cloudformation list-stacks | jq -r '.StackSummaries[] | select(.StackName|test("^mod.")) | .StackName')
 
 # load outputs to env vars
 for output in $(aws cloudformation describe-stacks --stack-name $stack_name --query 'Stacks[].Outputs[].OutputKey' --output text)
