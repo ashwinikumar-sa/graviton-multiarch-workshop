@@ -252,7 +252,21 @@ eksctl get cluster
 aws eks update-kubeconfig --name eksworkshop-eksctl
 kubectl get nodes
 ```
-You should see two nodes running in the EKS cluster. Let's now install some Kubernetes tools in the EKS cluster
+You should see two nodes running in the EKS cluster.
+![image](https://user-images.githubusercontent.com/75417152/167797240-1e30e807-b2a6-48dc-83e7-7e84f4546d1e.png)
+
+
+### Troubleshooting tip (Optional, only if you can not see above two nodes in your EKS cluster or else skip this step)
+<details>
+  <summary>Click to expand!</summary>
+  
+  ### Create a node group with 2 on-demand nodes (this may take few minutes, so please wait..)
+    eksctl create nodegroup --config-file=default-ng-od.yaml
+    kubectl get nodes
+    
+</details>
+
+Let's now install some Kubernetes tools in the EKS cluster
 
 ### Step 2: Install Helm CLI
 Helm is a package manager for Kubernetes that packages multiple Kubernetes resources into a single logical deployment unit called Chart.
@@ -388,11 +402,11 @@ metadata:
   region: us-west-2
   version: "1.21"
 ```
-### Create Graviton instances based EKS managed node group
+### Create Graviton instances based EKS managed node group (this may take few minutes, so please wait..)
 ```bash
 eksctl create nodegroup --config-file=add-mng-gv2.yaml
 ```
-### Create x86 instances based EKS managed node group
+### Create x86 instances based EKS managed node group (this may take few minutes, so please wait..)
 ```bash
 eksctl create nodegroup --config-file=add-mng-x86.yaml
 ```
