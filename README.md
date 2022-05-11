@@ -252,7 +252,11 @@ eksctl get cluster
 aws eks update-kubeconfig --name eksworkshop-eksctl
 kubectl get nodes
 ```
-You should see two nodes running in the EKS cluster. Let's now install some Kubernetes tools in the EKS cluster
+You should see two nodes running in the EKS cluster.
+![image](https://user-images.githubusercontent.com/75417152/167797240-1e30e807-b2a6-48dc-83e7-7e84f4546d1e.png)
+
+
+Let's now install some Kubernetes tools in the EKS cluster
 
 ### Step 2: Install Helm CLI
 Helm is a package manager for Kubernetes that packages multiple Kubernetes resources into a single logical deployment unit called Chart.
