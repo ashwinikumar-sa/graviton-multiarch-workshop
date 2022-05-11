@@ -1,0 +1,29 @@
+---
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+managedNodeGroups:
+- name: m5large-mng-od
+  desiredCapacity: 2
+  minSize: 0
+  maxSize: 2
+  instanceType: m5.large
+  iam:
+    withAddonPolicies:
+      autoScaler: true
+      cloudWatch: true
+      albIngress: true
+  privateNetworking: true
+  labels:
+    alpha.eksctl.io/cluster-name: eksworkshop-eksctl
+    alpha.eksctl.io/nodegroup-name: m5large-mng-od
+    intent: control-apps
+  tags:
+    alpha.eksctl.io/nodegroup-name: m5large-mng-od
+    alpha.eksctl.io/nodegroup-type: managed
+    k8s.io/cluster-autoscaler/node-template/label/intent: control-apps
+
+metadata:
+  name: eksworkshop-eksctl
+  region: us-west-2
+  version: "1.21"
